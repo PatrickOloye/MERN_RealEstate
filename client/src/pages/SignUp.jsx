@@ -30,10 +30,10 @@ const SignOut = () => {
       body: JSON.stringify(formData)
     });
     const data = await res.json()
-    console.log(data.msg)
+    console.log(data)
     if(data.success === false){
       setError(data.message)
-      toast.error(data.msg)
+      toast.error(data.message)
       setLoading(false)
       return;
     }

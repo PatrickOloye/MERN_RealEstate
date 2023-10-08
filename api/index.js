@@ -15,6 +15,16 @@ const port = process.env.PORT || 3030
 app.use(express.json())
 app.use('/api/v0/auth', AuthRoutes)
 
+
+app.use((err, req, res, next)=>{
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal server error';
+    return res.status(statusCode).json({
+        success: false, 
+        statusCode,
+        message
+    })
+})
 const start = async () => {
     try {
         Db()

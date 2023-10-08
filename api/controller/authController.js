@@ -1,5 +1,6 @@
 import User from '../models/UserModel.js'
 import bcrypt from 'bcryptjs'
+import { errorHandler } from '../utils/error.js'
 
 export const signup = async(req, res, next) => {
     try {
@@ -10,7 +11,7 @@ export const signup = async(req, res, next) => {
 
         const emailExists = await User.findOne({email: email})
         const usernameExists = await User.findOne({username: username})
-        if(emailExists)return res.status(400).json({success: false, msg: "email already exists"})
+        if(emailExists)return res.status(400).json({success: false, msg: "email   already exists"})
         if(usernameExists)return res.status(400).json({success: false, msg: "username already exists"})
 
         const hashedPassword = bcrypt.hashSync(password, 12)
@@ -27,9 +28,11 @@ export const signup = async(req, res, next) => {
         })
     } catch (error) {
         console.log(error.message)
-        res.status(500).json({
-            success: false,
-            message: `${error.message} went wrong`
-        })
+        // res.status(500).json({
+        //     success: false,
+        //     message: `${error.message} went wrong`
+        // })
+
+        next(error)
     }
 }

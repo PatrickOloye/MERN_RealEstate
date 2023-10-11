@@ -1,13 +1,18 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {  toast } from "react-toastify"
+import { useDispatch, useSelector } from 'react-redux'
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
+import OAuth from '../components/OAuth'
 
 const SignIn = () => {
 
   const [formData, setFormData] = useState({})
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
+  // const [error, setError] = useState(null)
+  // const [loading, setLoading] = useState(false)
+  const {loading, error} = useSelector((state)=> state.user)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     setFormData(
@@ -21,7 +26,8 @@ const SignIn = () => {
   const handleSubmit = async(e) => {
     e.preventDefault()
     try {
-      setLoading(true)
+      // setLoading(true)
+      dispatch(signInStart())
     const res = await fetch('/api/v0/auth/sign-in', {
       method: 'POST',
       headers: {
@@ -32,18 +38,19 @@ const SignIn = () => {
     const data = await res.json()
     console.log(data)
     if(data.success === false){
-      setError(data.message)
+      dispatch(signInFailure(data.message))
+      // setError(data.message)
       toast.error(data.message)
-      setLoading(false)
+      // setLoading(false)
       return;
     }
-    setLoading(false)
-    setError(null)
+    // setLoading(false)
+    // setError(null)
+    dispatch(signInSuccess(data))
     toast.success('Login Successful')
     navigate('/')
     } catch (error) {
-      setLoading(false)
-      setError(error.message)
+    dispatch(signInFailure(error.message))
     }
     
     // console.log(data)
@@ -59,6 +66,7 @@ const SignIn = () => {
         <button disabled={loading} className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
           {loading ? 'loading...' : "Sign In"}
         </button>
+        <OAuth/>
       </form>
 
       <div className="flex gap-2 mt-5 ">

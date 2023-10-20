@@ -46,7 +46,7 @@ export const signin = async(req, res, next) =>{
         // console.log(user._id)
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRETE)
         const {password: pass, ...data} = user._doc;
-        res.cookie('auth_token', token, {httpOnly: true, express: new Date(Date.now() + 24 * 60 * 60 * 30)}).status(200).json({
+        res.cookie('access_token', token, {httpOnly: true, express: new Date(Date.now() + 24 * 60 * 60 * 30)}).status(200).json({
             success: true, 
             message: 'Login successful',
             user
@@ -82,3 +82,12 @@ export const google = async(req, res, next)=>{
         next(error)
       }
 } 
+
+export const signout = async(req, res, next) => {
+    try {
+        res.clearCookie('access_token')
+        res.status(200).json('log out successful')
+    } catch (error) {
+       next(error) 
+    }
+}

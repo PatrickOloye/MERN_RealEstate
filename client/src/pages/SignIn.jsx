@@ -6,6 +6,7 @@ import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSli
 import OAuth from '../components/OAuth'
 
 const SignIn = () => {
+  
 
   const [formData, setFormData] = useState({})
   // const [error, setError] = useState(null)
@@ -47,7 +48,7 @@ const SignIn = () => {
     // setLoading(false)
     // setError(null)
     dispatch(signInSuccess(data))
-    toast.success('Login Successful')
+    toast.success('Login Successful') 
     navigate('/')
     } catch (error) {
     dispatch(signInFailure(error.message))

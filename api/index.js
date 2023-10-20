@@ -2,6 +2,8 @@ import express from 'express'
 import Db from './db/config.js'
 import dotenv from 'dotenv'
 import AuthRoutes from './routes/authRoutes.js'
+import cookieParser from 'cookie-parser'
+import UserRoute from './routes/userRoutes.js'
 
 
 
@@ -13,7 +15,9 @@ const app = express()
 const port = process.env.PORT || 3030
 
 app.use(express.json())
+app.use(cookieParser())
 app.use('/api/v0/auth', AuthRoutes)
+app.use('/api/v0/user', UserRoute)
 
 
 app.use((err, req, res, next)=>{

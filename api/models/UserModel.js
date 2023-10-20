@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     },
     photo: {
         type: String, 
-        default: "photo"
+        default: "https://th.bing.com/th/id/OIP.audMX4ZGbvT2_GJTx2c4GgHaHw?w=210&h=219&c=7&r=0&o=5&pid=1.7"
     },
 }, {
     timestamps: true
